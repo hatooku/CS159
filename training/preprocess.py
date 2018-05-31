@@ -1,8 +1,8 @@
 import numpy as np
 try:
-    from .key import OUTPUT_SIZE, DASH, DASH_POW, DASH_DEG, TURN, TURN_DEG, TACKLE, TACKLE_DEG, KICK, KICK_POW, KICK_DEG
+    from .key import *
 except ImportError:
-    from key import OUTPUT_SIZE, DASH, DASH_POW, DASH_DEG, TURN, TURN_DEG, TACKLE, TACKLE_DEG, KICK, KICK_POW, KICK_DEG
+    from key import *
 
 LOG_FILE = 'base_left-11.log'
 ACTIONS = {'Dash', 'Turn', 'Tackle', 'Kick'}
