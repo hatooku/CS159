@@ -1,29 +1,28 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*$py.class
 
 # C extensions
 *.so
+*.a
+*.o
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
 downloads/
 eggs/
-.eggs/
 lib/
 lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -34,18 +33,15 @@ MANIFEST
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+install_manifest.txt
 
 # Unit test / coverage reports
 htmlcov/
 .tox/
 .coverage
-.coverage.*
 .cache
 nosetests.xml
 coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
 
 # Translations
 *.mo
@@ -53,15 +49,6 @@ coverage.xml
 
 # Django stuff:
 *.log
-local_settings.py
-db.sqlite3
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
 
 # Sphinx documentation
 docs/_build/
@@ -69,38 +56,30 @@ docs/_build/
 # PyBuilder
 target/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Make files
+CMakeCache.txt
+Makefile
+cmake_install.cmake
+CMakeFiles/
 
-# pyenv
-.python-version
+# Executeables
+bin/teams/
+bin/rcssserver
+bin/soccerwindow2
+example/hfo_example_agent
+example/high_level_random_agent
+example/low_level_random_agent
+example/mid_level_move_agent
+example/mid_level_kick_agent
+example/mid_level_dribble_agent
+example/communication_agent
+example/hand_coded_defense_agent
 
-# celery beat schedule file
-celerybeat-schedule
+# Dependency directories
+librcsc-prefix/
+rcssserver-prefix/
+soccerwindow2-prefix/
 
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-
-.DS_Store
+# Logs
+log/
+bin/log/
