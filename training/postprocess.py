@@ -6,10 +6,10 @@ def get_action(action_array):
     max_idx = np.argmax(actions)
 
     if max_idx == 0:
-        return ('DASH', action_array[DASH_POW], action_array[DASH_DEG])
+        return (DASH, action_array[DASH_POW], action_array[DASH_DEG])
     elif max_idx == 1:
-        return ('TURN', action_array[TURN_DEG])
+        return (TURN, action_array[TURN_DEG])
     elif max_idx == 2:
-        return ('TACKLE', action_array[TACKLE_DEG])
+        return (TACKLE, action_array[TACKLE_DEG])
     else:
-        return ('KICK', action_array[KICK_POW], action_array[KICK_DEG])
+        return (KICK, action_array[KICK_POW], action_array[KICK_DEG])
