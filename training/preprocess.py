@@ -104,7 +104,7 @@ def get_feature_array(features):
     return feature_array
 
 def get_action_array(action):
-    action_array = [0.] * 4 + [float('nan')] * (OUTPUT_SIZE - 4)
+    action_array = [0.] * OUTPUT_SIZE
     # action_array = [0. for i in range(OUTPUT_SIZE)]
     param_str = action[action.index('(')+1:-1]
     action_type = action.split('(')[0]
