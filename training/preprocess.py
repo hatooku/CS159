@@ -5,7 +5,6 @@ except ImportError:
     from key import OUTPUT_SIZE, DASH, DASH_POW, DASH_DEG, TURN, TURN_DEG, TACKLE, TACKLE_DEG, KICK, KICK_POW, KICK_DEG
 
 LOG_FILE = 'base_left-11.log'
-INPUT_SIZE = 68
 ACTIONS = {'Dash', 'Turn', 'Tackle', 'Kick'}
 
 def fetch_data(logs):
@@ -98,7 +97,6 @@ def fetch_data_helper(log_file):
 
 def get_feature_array(features):
     feature_array = [float(feat) for feat in features]
-    assert len(feature_array) == INPUT_SIZE
 
     for feat in feature_array:
         assert feat >= -1. and feat <= 1.
