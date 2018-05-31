@@ -1,7 +1,10 @@
 try:
   from hfo_py.hfo import *
 except ImportError:
-  from hfo import *
+  try:
+    from hfo import *
+  except ImportError:
+    from .hfo import *
 
 import os
 

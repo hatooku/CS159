@@ -1,5 +1,5 @@
 import numpy as np
-from key import OUTPUT_SIZE, DASH, DASH_POW, DASH_DEG, TURN, TURN_DEG, TACKLE, TACKLE_DEG, KICK, KICK_POW, KICK_DEG
+from .key import *
 
 def get_action(action_array):
     actions = np.array([action_array[DASH], action_array[TURN], action_array[TACKLE], action_array[KICK]])
