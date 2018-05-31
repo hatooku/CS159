@@ -5,48 +5,93 @@ LOG_FILE = 'base_left-11.log'
 INPUT_SIZE = 68
 ACTIONS = {'Dash', 'Turn', 'Tackle', 'Kick'}
 
-def fetch_data(log_file):
+def fetch_data(logs):
+    """Input: Array of log filenames"""
+    assert(isinstance(logs, list))
+    X = None
+    y = None
+    for log_file in logs:
+        if X is None:
+            X, y = fetch_data_helper(log_file)
+        else:
+            X_new, y_new = fetch_data_helper(log_file)
+            X = np.concatenate((X, X_new))
+            y = np.concatenate((y, y_new))
+
+    return X, y
+
+def fetch_data_helper(log_file):
     X = []
     y = []
-    prev_iter = 0
-    features_exist = False
-    action_exists = False
-    prev_valid = False
+    prev_time = 0
+    curr_features = None # string
+    curr_actions = None # string
 
     with open(log_file) as f:
         for line in f:
-            line = line.strip()
-            words = line.split()
-            curr_iter = int(words[0])
+            words = line.strip().split()
+            curr_time = int(words[0])
 
-            if curr_iter != prev_iter:
-                if prev_valid:
-                    X.append(state_features)
-                    y.append(action)
-                    prev_valid = False
+            if curr_time != prev_time:
+                if curr_features is not None and curr_actions is not None:
+                    X.append(get_feature_array(curr_features))
+                    y.append(get_action_array(curr_actions))
+                prev_time = curr_time
+                curr_features = None
+                curr_actions = None
 
-            if words[3] == 'StateFeatures':
-                state_features = get_feature_array(words[4:])
-                features_exist = True
-            else:
-                action_exists = False
-                for action in ACTIONS:
-                    if action in line:
-                        action_exists = True
+            if words[3] == "StateFeatures": # States
+                curr_features = words[4:]
+            elif words[1] == "8": # Actions
+                curr_actions = words[4]
 
-                if action_exists and features_exist:
-                    action = get_action_array(words[4])
-                    prev_valid = True
-                else:
-                    features_exist = False
-
-            prev_iter = curr_iter
-
-        if prev_valid:
-            X.append(state_features)
-            y.append(action)
+    if curr_features is not None and curr_actions is not None:
+        X.append(get_feature_array(curr_features))
+        y.append(get_action_array(curr_actions))
 
     return np.array(X), np.array(y)
+
+# def fetch_data_old(log_file):
+#     X = []
+#     y = []
+#     prev_iter = 0
+#     features_exist = False
+#     action_exists = False
+#     prev_valid = False
+
+#     with open(log_file) as f:
+#         for line in f:
+#             words = line.strip().split()
+#             curr_iter = int(words[0])
+
+#             if curr_iter != prev_iter:
+#                 if prev_valid:
+#                     X.append(state_features)
+#                     y.append(action)
+#                     prev_valid = False
+
+#             if words[3] == 'StateFeatures':
+#                 state_features = get_feature_array(words[4:])
+#                 features_exist = True
+#             else:
+#                 action_exists = False
+#                 for action in ACTIONS:
+#                     if action in line:
+#                         action_exists = True
+
+#                 if action_exists and features_exist:
+#                     action = get_action_array(words[4])
+#                     prev_valid = True
+#                 else:
+#                     features_exist = False
+
+#             prev_iter = curr_iter
+
+#         if prev_valid:
+#             X.append(state_features)
+#             y.append(action)
+
+#     return np.array(X), np.array(y)
 
 def get_feature_array(features):
     feature_array = [float(feat) for feat in features]
