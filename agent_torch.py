@@ -8,13 +8,15 @@ import os
 import torch
 os.chdir('HFO')
 
+INPUT_SIZE = 59
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 MODEL_PATH = "../training/models/15000_pytorch_1v0_partialstate_FINAL.model"
 
 def main():
     # Create model
-    model = NeuralNet()
+    model = NeuralNet(INPUT_SIZE)
     if device == 'cuda':
     	model = model.cuda()
     if device != 'cuda':
@@ -34,7 +36,6 @@ def main():
         while status == IN_GAME:
             # Grab the state features from the environment
             features = hfo.getState()
-            # print(",".join(list(map(str, features))))
             features_tensor = torch.from_numpy(features).float().unsqueeze(0)
             if device == 'cuda':
             	features_tensor = features_tensor.cuda()
@@ -43,22 +44,15 @@ def main():
             action_arrays = (y[0].data.cpu().numpy(), y[1].data.cpu().numpy())
             action = get_action(action_arrays)
             move = action[0]
-            # print(action_arrays[0])
             # Take an action and get the current game status
             if move == 0:
                 hfo.act(DASH, action[1], action[2])
-                print("DASH", action)
             elif move == 1:
                 hfo.act(TURN, action[1])
-                print("TURN", action)
             elif move == 2:
-                # hfo.act(TACKLE, action[1])
-                # print("TACKLE", action)
-                hfo.act(NOOP)
-                print("TACKLE -> NOOP")
+                hfo.act(TACKLE, action[1])
             else:
                 hfo.act(KICK, action[1], action[2])
-                print("KICK", action)
             # Advance the environment and get the game status
             status = hfo.step()
         # Check the outcome of the episode
