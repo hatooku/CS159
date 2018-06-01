@@ -8,10 +8,19 @@ import os
 import torch
 os.chdir('HFO')
 
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+MODEL_PATH = "../training/models/15000_pytorch_1v0_partialstate_FINAL.model"
+
 def main():
     # Create model
-    model = NeuralNet().cuda()
-    model.load_state_dict(torch.load("../training/models/15000_pytorch_1v0_fullstate_FINAL.model"))
+    model = NeuralNet()
+    if device == 'cuda':
+    	model = model.cuda()
+    if device != 'cuda':
+    	model.load_state_dict(torch.load(MODEL_PATH, map_location=lambda storage, location: storage))
+    else:
+    	model.load_state_dict(torch.load(MODEL_PATH))
 
     # Create the HFO Environment
     hfo = HFOEnvironment()
@@ -25,20 +34,31 @@ def main():
         while status == IN_GAME:
             # Grab the state features from the environment
             features = hfo.getState()
-            features_tensor = torch.from_numpy(features).cuda().float().unsqueeze(0)
+            # print(",".join(list(map(str, features))))
+            features_tensor = torch.from_numpy(features).float().unsqueeze(0)
+            if device == 'cuda':
+            	features_tensor = features_tensor.cuda()
             y = model(features_tensor)
-            action_arrays = np.concatenate((y[0].data.cpu().numpy(), y[1].data.cpu().numpy()), axis=1)
+            assert(y[0].shape[1] == 4)
+            action_arrays = (y[0].data.cpu().numpy(), y[1].data.cpu().numpy())
             action = get_action(action_arrays)
             move = action[0]
+            # print(action_arrays[0])
             # Take an action and get the current game status
             if move == 0:
                 hfo.act(DASH, action[1], action[2])
+                print("DASH", action)
             elif move == 1:
                 hfo.act(TURN, action[1])
+                print("TURN", action)
             elif move == 2:
-                hfo.act(TACKLE, action[1])
+                # hfo.act(TACKLE, action[1])
+                # print("TACKLE", action)
+                hfo.act(NOOP)
+                print("TACKLE -> NOOP")
             else:
                 hfo.act(KICK, action[1], action[2])
+                print("KICK", action)
             # Advance the environment and get the game status
             status = hfo.step()
         # Check the outcome of the episode
