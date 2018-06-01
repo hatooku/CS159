@@ -41,7 +41,7 @@ class NeuralNet(nn.Module):
 # 5 layer model 
 class NeuralNet2(nn.Module):
     def __init__(self, input_size):
-        super(NeuralNet, self).__init__()
+        super(NeuralNet2, self).__init__()
         self.fc1 = nn.Linear(in_features=input_size, out_features=1000) 
         self.relu1 = nn.LeakyReLU()
         self.fc2 = nn.Linear(in_features=1000, out_features=750) 
